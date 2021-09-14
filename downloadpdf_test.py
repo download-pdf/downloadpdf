@@ -1,6 +1,6 @@
 """Download And Save PDF
 
-This script allows the user to download all PDF documents from the 
+This script allows the user to  wtf.tw all PDF documents from the 
 URL.
 
 At the moment it does not accept URL as a parameter as a static
@@ -21,32 +21,72 @@ TODO:
 """
 
 import unittest
-import requests
-from bs4 import BeautifulSoup
-import urllib
-import re
-from urllib.parse import unquote
 import os
+import shutil
+import downloadpdf
 
-def downloadPDF():
+class TestURL(unittest.TestCase):
+    def test_shouldPassWithValidURL(self):
+        url = 'http://google.com'
+        self.assertIsNone(downloadpdf.isURLValid(url))
+        
+    def test_shouldRaiseExceptionWithInvalidURL(self):
+        invalidURL = 'google.com'
+        self.assertRaises(Exception, 
+            downloadpdf.isURLValid, invalidURL)
+
+class TestFolder(unittest.TestCase):
+    def test_shouldCreateFolder(self):
+        url = 'https://test.com'
+        dirPath = '/tmp/test.com'
+
+        if os.path.exists(dirPath):
+            shutil.rmtree('/tmp/test.com')
+
+        self.assertEqual(downloadpdf.createFolder(url), dirPath)
+
+    def test_shouldFailIfFolderExists(self):
+        url = 'http://test.com'
+        dirPath = '/tmp/test.com/'
+
+        if not os.path.exists(dirPath):
+            os.mkdir(dirPath)
+
+        self.assertRaises(Exception, 
+            downloadpdf.createFolder, url)
+    
+    def tearDown(self):
+        super(TestFolder, self).tearDown()
+
+        if os.path.exists('/tmp/test.com'):
+            shutil.rmtree('/tmp/test.com')
+
+class TestDownloadPDF(unittest.TestCase):
     """
-    Downloads PDF's from the URL.
+    Download PDF's from exisiting URL's.
     """
+    url = ""
 
-    URL = 'http://athena.ecs.csus.edu/~buckley/CSc191/'
-    response = urllib.request.urlopen(URL)
-    html = response.read()
-    soup = BeautifulSoup(html)
+    def test_shouldDownloadFromAthena(self):
+        self.url = 'http://athena.ecs.csus.edu/~buckley/CSc191/'
+        self.assertIsNone(downloadpdf.downloadPDF(self.url))
 
-    for link in soup.find_all("a", href=re.compile("pdf")):
-        decodedFileName = unquote(link.get('href'))
-        r = requests.get(URL+decodedFileName)
-        with open(os.path.join('/home/anit/work/athena.ecs.csus.edu', decodedFileName), 'wb') as f:
-            f.write(r.content) 
+    def test_shouldDownloadFromWTF(self):
+        self.url = 'https://wtf.tw/ref/'
+        self.assertIsNone(downloadpdf.downloadPDF(self.url))    
+    
+    def tearDown(self):
+        super(TestDownloadPDF, self).tearDown()
+        urlPart = self.url.split("//")[1]
+        folderName = urlPart.split("/")[0]
+        dirPath =  '/tmp/' + folderName
+
+        if os.path.exists(dirPath):
+            shutil.rmtree(dirPath)
 
 if __name__ == '__main__':
-    downloadPDF()
+    unittest.main()
 
-class TestSolution(unittest.TestCase):
-    def test_downloadPDF(self):            
-        print('TODO')
+# https://stackoverflow.com/questions/2052390/manually-raising-throwing-an-exception-in-python#24065533
+# https://stackoverflow.com/questions/303200/how-do-i-remove-delete-a-folder-that-is-not-empty#303225
+# https://docs.python.org/3/library/exceptions.html
