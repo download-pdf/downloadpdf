@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import urllib, re, os, sys
 import logging
 from urllib import request

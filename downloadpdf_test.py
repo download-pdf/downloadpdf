@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import logging
 import unittest
@@ -27,15 +27,14 @@ class TestFolder(unittest.TestCase):
 
         self.assertEqual(downloadpdf.createFolder(url), dirPath)
 
-    def test_shouldFailIfFolderExists(self):
+    def test_shouldReturnFolderPathIfExists(self):
         url = 'http://test.com'
-        dirPath = '/tmp/test.com/'
+        dirPath = '/tmp/test.com'
 
         if not os.path.exists(dirPath):
             os.mkdir(dirPath)
 
-        self.assertRaises(Exception, 
-            downloadpdf.createFolder, url)
+        self.assertEqual(downloadpdf.createFolder(url), dirPath)
     
     def tearDown(self):
         super(TestFolder, self).tearDown()
@@ -97,7 +96,7 @@ class TestDownloadPDF(unittest.TestCase):
         
         self.assertTrue(self.pdfFileExists)
 
-    def tearDown(self):
+    def xtearDown(self):
         super(TestDownloadPDF, self).tearDown()
        
         urlPart = self.url.split("//")[1]
