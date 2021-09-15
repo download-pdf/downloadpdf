@@ -1,25 +1,8 @@
-import urllib, re, os, sys, logging
+import urllib, re, os, sys
+import logging
 from urllib import request
 from urllib.parse import unquote
 from bs4 import BeautifulSoup
-
-def initilaizeLog(dir):
-    global logger     
-    logfile = dir + '/.log'
-    log_format = (
-        '[%(asctime)s] %(levelname)-8s %(name)-12s ' 
-        '%(message)s')
-
-    logging.basicConfig(
-        level=logging.INFO,
-        format=log_format,
-        handlers=[
-            logging.FileHandler(logfile),
-            logging.StreamHandler(sys.stdout),
-        ],
-    )
-
-    logger = logging.getLogger(dir.split("/")[2])
 
 def downloadPDF(url):
     """Download And Save PDF
@@ -29,6 +12,8 @@ def downloadPDF(url):
     """
     try:
         isURLValid(url)
+        dirPath = createFolder(url)
+        logger = logging.getLogger(dirPath.split("/")[2])
 
         if ( url.split("//")[0] == "https:"):
             opener = request.build_opener()
@@ -46,23 +31,24 @@ def downloadPDF(url):
         pdfs = soup.findAll("a", href=re.compile("pdf"))
         
         if len(pdfs) == 0:
-            raise Exception('No PDFs found!')
-
-        dirPath = createFolder(url)
-        initilaizeLog(dirPath)
-        
-        logger.info('Started  wtf.tw PDFs from ' + url)
+            raise Exception('No PDFs found at ' + url)
+            
+        logger.info('Started  downloading PDFs from ' + url)
         
         for link in pdfs:
             decodedFileName = link.get('href')
             unquoteFileName = unquote(decodedFileName)  
+
             request.urlretrieve( url + decodedFileName, 
                 dirPath + '/' + unquoteFileName)
-            
+
             logger.info('Downloaded ' + unquoteFileName)
 
+            if (os.environ.get('DEBUG')):
+                break
+
     except Exception as e:
-        exit(e)
+        logger.error(e)
 
 def isURLValid(url):
     regex = re.compile(
@@ -81,8 +67,7 @@ def createFolder(url):
         folderName = url.split("/")[0]
         dirPath =  '/tmp/' + folderName
 
-        if os.path.exists(dirPath):
-            raise Exception('Folder exists!')
-        else:
+        if not os.path.exists(dirPath):
             os.mkdir(dirPath)
-            return dirPath
+            
+        return dirPath

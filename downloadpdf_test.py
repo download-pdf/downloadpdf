@@ -1,29 +1,11 @@
-"""Download And Save PDF
+#!/usr/bin/env python
 
-This script allows the user to  wtf.tw all PDF documents from the 
-URL.
-
-At the moment it does not accept URL as a parameter as a static
-URL is provided.
-
-This script requires that `BeautifulSoup` be installed within the Python
-environment you are running this script in.
-
-This file can also be imported as a module and contains the following
-functions:
-
-    * downloadPDF - Downloads and stores PDF
-
-TODO: 
-    - Write Unit tests
-    - Pass URL as a parameter in downloadPDF()
-    - Make the system installable and standalone 
-"""
-
+import logging
 import unittest
-import os
+import os, sys
 import shutil
 import downloadpdf
+import tracemalloc
 
 class TestURL(unittest.TestCase):
     def test_shouldPassWithValidURL(self):
@@ -65,28 +47,87 @@ class TestDownloadPDF(unittest.TestCase):
     """
     Download PDF's from exisiting URL's.
     """
-    url = ""
+    os.environ["DEBUG"] = "TRUE"
+    
+    url = ''
+    folder = ''
+    pdfFileExists = False
+
+    def setUp(self):
+        super(TestDownloadPDF, self).setUp()
+        self.initilaizeLog()
+    
+    def initilaizeLog(self):
+        logfile =  '/tmp/pdfdownload.log'
+        log_format = (
+            '[%(asctime)s] %(levelname)-8s %(name)-12s ' 
+            '%(message)s')
+        
+        logging.basicConfig(
+            level=logging.INFO,
+            format=log_format,
+            filename=logfile
+        )
 
     def test_shouldDownloadFromAthena(self):
+        self.folder = 'athena.ecs.csus.edu'
         self.url = 'http://athena.ecs.csus.edu/~buckley/CSc191/'
         self.assertIsNone(downloadpdf.downloadPDF(self.url))
+        self.fileAndFolderExists(self.folder)
 
     def test_shouldDownloadFromWTF(self):
+        self.folder = 'wtf.tw'
         self.url = 'https://wtf.tw/ref/'
-        self.assertIsNone(downloadpdf.downloadPDF(self.url))    
+        self.assertIsNone(downloadpdf.downloadPDF(self.url))
+        self.fileAndFolderExists(self.folder)
     
+    def test_shouldProcessGracefully(self):
+        self.folder = 'codeanit.com'
+        self.url = 'https://codeanit.com'
+        self.assertIsNone(downloadpdf.downloadPDF(self.url))
+    
+    def fileAndFolderExists(self, folder):
+        self.assertTrue(os.path.exists('/tmp/' + folder))
+
+        for fname in os.listdir('/tmp/' + folder):
+            
+            if fname.endswith('.pdf'):
+                self.pdfFileExists = True
+                break
+        
+        self.assertTrue(self.pdfFileExists)
+
     def tearDown(self):
         super(TestDownloadPDF, self).tearDown()
+       
         urlPart = self.url.split("//")[1]
         folderName = urlPart.split("/")[0]
         dirPath =  '/tmp/' + folderName
 
         if os.path.exists(dirPath):
             shutil.rmtree(dirPath)
+        
+        logging.FileHandler(self.folder).close()
+        logging.shutdown()
+
+        self.url = ''
+        self.pdfFileExists = False
+        self.folder=''
+
+'''
+Pass PYTHONTRACEMALLOC=1 in CLI to enable tracing.
+'''
+tracemalloc.start()
 
 if __name__ == '__main__':
     unittest.main()
 
+snapshot = tracemalloc.take_snapshot()
+top_stats = snapshot.statistics('lineno')
+for stat in top_stats[:10]:
+    print(stat)
+
 # https://stackoverflow.com/questions/2052390/manually-raising-throwing-an-exception-in-python#24065533
 # https://stackoverflow.com/questions/303200/how-do-i-remove-delete-a-folder-that-is-not-empty#303225
 # https://docs.python.org/3/library/exceptions.html
+# https://docs.python.org/3/library/tracemalloc.html
