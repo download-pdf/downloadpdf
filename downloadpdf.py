@@ -15,7 +15,7 @@ def downloadPDF(url):
     try:
         isURLValid(url)
         dirPath = createFolder(url)
-        logger = logging.getLogger(dirPath.split("/")[2])
+        logger = logging.getLogger('test')
 
         if ( url.split("//")[0] == "https:"):
             opener = request.build_opener()
@@ -41,7 +41,7 @@ def downloadPDF(url):
             decodedFileName = link.get('href')
             unquoteFileName = unquote(decodedFileName)  
 
-            request.urlretrieve( url + decodedFileName, 
+            request.urlretrieve( url + '/' + decodedFileName, 
                 dirPath + '/' + unquoteFileName)
 
             logger.info('Downloaded ' + unquoteFileName)

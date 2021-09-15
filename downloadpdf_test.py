@@ -96,7 +96,7 @@ class TestDownloadPDF(unittest.TestCase):
         
         self.assertTrue(self.pdfFileExists)
 
-    def xtearDown(self):
+    def tearDown(self):
         super(TestDownloadPDF, self).tearDown()
        
         urlPart = self.url.split("//")[1]
@@ -106,7 +106,6 @@ class TestDownloadPDF(unittest.TestCase):
         if os.path.exists(dirPath):
             shutil.rmtree(dirPath)
         
-        logging.FileHandler(self.folder).close()
         logging.shutdown()
 
         self.url = ''
@@ -114,7 +113,7 @@ class TestDownloadPDF(unittest.TestCase):
         self.folder=''
 
 '''
-Pass PYTHONTRACEMALLOC=1 in CLI to enable tracing.
+Pass PYTHONTRACEMALLOC=1 in CLI to enable memory tracing.
 '''
 tracemalloc.start()
 
@@ -125,8 +124,3 @@ snapshot = tracemalloc.take_snapshot()
 top_stats = snapshot.statistics('lineno')
 for stat in top_stats[:10]:
     print(stat)
-
-# https://stackoverflow.com/questions/2052390/manually-raising-throwing-an-exception-in-python#24065533
-# https://stackoverflow.com/questions/303200/how-do-i-remove-delete-a-folder-that-is-not-empty#303225
-# https://docs.python.org/3/library/exceptions.html
-# https://docs.python.org/3/library/tracemalloc.html
