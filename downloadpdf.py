@@ -31,7 +31,6 @@ def downloadPDF(url):
 
 
 
-
         html = request.urlopen(url).read()
 
         soup = BeautifulSoup(html, features="html.parser")
