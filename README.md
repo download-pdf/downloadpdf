@@ -21,3 +21,4 @@ Logs are stored in /tmp/pdfdownload.log.
 `python -m unittest downloadpdf_test`: Run all the test cases/Classes
 `python -m unittest downloadpdf_test.TestURL`: Run specific test Class
 `python -m unittest downloadpdf_test.TestDownloadPDF.test_shouldDownloadFromAthena`: Run specific test case
+`pytest downloadpdf_test.py --html=testcov-html/downloadpdf_testdata.html --cov=$(pwd) --cov-report=html`
