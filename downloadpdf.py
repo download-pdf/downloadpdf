@@ -7,6 +7,8 @@ from urllib import request
 from urllib.parse import unquote
 from bs4 import BeautifulSoup
 
+
+
 def downloadPDF(url):
     """Download And Save PDF
 
@@ -27,8 +29,6 @@ def downloadPDF(url):
                                   'Chrome/35.0.1916.47 '
                                   'Safari/537.36')]
             request.install_opener(opener)
-
-
 
         html = request.urlopen(url).read()
 
