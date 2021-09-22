@@ -29,6 +29,7 @@ def downloadPDF(url):
                                   'Safari/537.36')]
             request.install_opener(opener)
 
+
         html = request.urlopen(url).read()
 
         soup = BeautifulSoup(html, features="html.parser")
