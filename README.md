@@ -17,7 +17,7 @@ DOMAIN is the domain name from the URL.
 
 Logs are stored in /tmp/pdfdownload.log.
 
-## Testing
+## Quality Assurance
 
 ### Run Tests
 `python -m unittest downloadpdf_test`: Run all the test cases/Classes

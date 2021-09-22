@@ -2,20 +2,22 @@
 
 import logging
 import unittest
-import os, sys
+import os
 import shutil
 import downloadpdf
 import tracemalloc
+
 
 class TestURL(unittest.TestCase):
     def test_shouldPassWithValidURL(self):
         url = 'http://google.com'
         self.assertIsNone(downloadpdf.isURLValid(url))
-        
+
     def test_shouldRaiseExceptionWithInvalidURL(self):
         invalidURL = 'google.com'
-        self.assertRaises(Exception, 
-            downloadpdf.isURLValid, invalidURL)
+        self.assertRaises(Exception,
+                          downloadpdf.isURLValid, invalidURL)
+
 
 class TestFolder(unittest.TestCase):
     def test_shouldCreateFolder(self):
@@ -35,19 +37,20 @@ class TestFolder(unittest.TestCase):
             os.mkdir(dirPath)
 
         self.assertEqual(downloadpdf.createFolder(url), dirPath)
-    
+
     def tearDown(self):
         super(TestFolder, self).tearDown()
 
         if os.path.exists('/tmp/test.com'):
             shutil.rmtree('/tmp/test.com')
 
+
 class TestDownloadPDF(unittest.TestCase):
     """
     Download PDF's from exisiting URL's.
     """
     os.environ["DEBUG"] = "TRUE"
-    
+
     url = ''
     folder = ''
     pdfFileExists = False
@@ -55,13 +58,13 @@ class TestDownloadPDF(unittest.TestCase):
     def setUp(self):
         super(TestDownloadPDF, self).setUp()
         self.initilaizeLog()
-    
+
     def initilaizeLog(self):
-        logfile =  '/tmp/pdfdownload.log'
+        logfile = '/tmp/pdfdownload.log'
         log_format = (
-            '[%(asctime)s] %(levelname)-8s %(name)-12s ' 
+            '[%(asctime)s] %(levelname)-8s %(name)-12s '
             '%(message)s')
-        
+
         logging.basicConfig(
             level=logging.INFO,
             format=log_format,
@@ -79,38 +82,39 @@ class TestDownloadPDF(unittest.TestCase):
         self.url = 'https://wtf.tw/ref/'
         self.assertIsNone(downloadpdf.downloadPDF(self.url))
         self.fileAndFolderExists(self.folder)
-    
+
     def test_shouldProcessGracefully(self):
         self.folder = 'codeanit.com'
         self.url = 'https://codeanit.com'
         self.assertIsNone(downloadpdf.downloadPDF(self.url))
-    
+
     def fileAndFolderExists(self, folder):
         self.assertTrue(os.path.exists('/tmp/' + folder))
 
         for fname in os.listdir('/tmp/' + folder):
-            
+
             if fname.endswith('.pdf'):
                 self.pdfFileExists = True
                 break
-        
+
         self.assertTrue(self.pdfFileExists)
 
     def tearDown(self):
         super(TestDownloadPDF, self).tearDown()
-       
+
         urlPart = self.url.split("//")[1]
         folderName = urlPart.split("/")[0]
-        dirPath =  '/tmp/' + folderName
+        dirPath = '/tmp/' + folderName
 
         if os.path.exists(dirPath):
             shutil.rmtree(dirPath)
-        
+
         logging.shutdown()
 
         self.url = ''
         self.pdfFileExists = False
-        self.folder=''
+        self.folder = ''
+
 
 '''
 Pass PYTHONTRACEMALLOC=1 in CLI to enable memory tracing.

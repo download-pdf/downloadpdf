@@ -7,7 +7,6 @@ from urllib import request
 from urllib.parse import unquote
 from bs4 import BeautifulSoup
 
-
 def downloadPDF(url):
     """Download And Save PDF
 
