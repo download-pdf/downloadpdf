@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import re
-from urllib3 import request
+from urllib import request
 
 
 def validateURL(url):
