@@ -7,8 +7,8 @@ import tracemalloc
 from util.log import initilaizeLog
 from util.storage import storagePath
 from util.header import setHeaders
-from app.scrap import scrapHREF
-from app.download import downloadPDF
+from main.scrap import scrapHREF
+from main.download import downloadPDF
 
 
 class TestDownloadPDF(unittest.TestCase):
