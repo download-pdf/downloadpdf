@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='downloadpdf',
-      version='1.0.3',
+      version='1.0.4',
       description='Downloads PDFs from URL',
       url='https://codeanit.com/',
       author='Anit Shrestha Manandhar',
