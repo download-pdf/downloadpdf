@@ -7,7 +7,7 @@ setup(name='downloadpdf',
       author='Anit Shrestha Manandhar',
       author_email='codeanit@gmail.com',
       license='MIT',
-      packages=['downloadpdf'],
+      packages=['downloadpdf', 'app', 'util'],
       zip_safe=False,
       python_requires='>=3.6',
       install_requires=['beautifulsoup4==4.10.0'])
