@@ -21,7 +21,6 @@ class TestDownloadPDF(unittest.TestCase):
         super(TestDownloadPDF, self).setUp()
         initilaizeLog()
 
-
     def test_shouldDownloadFromAthena(self):
         self.folder = 'athena.ecs.csus.edu'
         self.url = 'http://athena.ecs.csus.edu/~buckley/CSc191/'
