@@ -8,4 +8,6 @@ setup(name='downloadpdf',
       author_email='codeanit@gmail.com',
       license='MIT',
       packages=['downloadpdf'],
-      zip_safe=False)
+      zip_safe=False,
+      python_requires='>=3.6',
+      install_requires=['beautifulsoup4==4.10.0'])

@@ -15,7 +15,5 @@ def downloadPDF(url, storage, pdfs):
         request.urlretrieve(url + '/' + decodedFileName,
                             storage + '/' + unquoteFileName)
 
-        logger.info(unquoteFileName)
-
         if (os.environ.get('DEBUG')):
             break

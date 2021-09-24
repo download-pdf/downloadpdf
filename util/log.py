@@ -3,7 +3,7 @@ import logging
 
 
 def initilaizeLog():
-    logfile = '/tmp/pdfdownload.log'
+    logfile = '/tmp/downloadpdf.log'
     log_format = (
         '[%(asctime)s] %(levelname)-8s %(name)-12s '
         '%(message)s')
