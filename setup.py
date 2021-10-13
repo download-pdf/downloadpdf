@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='downloadpdf',
-      version='1.0.8',
+      version='1.0.9',
       description='Download PDF from URL',
       long_description='For more information visit code repository.',
       url='https://github.com/PythonCheatsheet/downloadpdf/',
