@@ -4,10 +4,10 @@ import unittest
 import os
 import shutil
 import tracemalloc
-from util.log import initilaizeLog
+from util.log import initializeLog
 from util.storage import storagePath
 from util.header import setHeaders
-from main.scrap import scrapHREF
+from main.scrape import scrapeHREF
 from main.download import downloadPDF
 
 
@@ -15,36 +15,39 @@ class TestDownloadPDF(unittest.TestCase):
     os.environ["DEBUG"] = "TRUE"
     url = ''
     folder = ''
+    location = ''
     pdfFileExists = False
 
     def setUp(self):
         super(TestDownloadPDF, self).setUp()
-        initilaizeLog()
+        initializeLog()
 
     def test_shouldDownloadFromAthena(self):
         self.folder = 'athena.ecs.csus.edu'
         self.url = 'http://athena.ecs.csus.edu/~buckley/CSc191/'
-        location = storagePath(self.url)
-        setHeaders(self.url)
-        pdfs = scrapHREF(self.url)
+        pdfList = self.getPDF()
 
-        self.assertIsNone(downloadPDF(self.url, location, pdfs))
-        self.fileAndFolderExists(self.folder)
+        self.assertIsNone(downloadPDF(self.url, self.location, pdfList))
+        self.fileAndFolderExists()
 
     def test_shouldDownloadFromWTF(self):
         self.folder = 'wtf.tw'
         self.url = 'https://wtf.tw/ref/'
-        location = storagePath(self.url)
+        pdfList = self.getPDF()
+
+        self.assertIsNone(downloadPDF(self.url, self.location, pdfList))
+        self.fileAndFolderExists()
+
+    def getPDF(self):
+        self.location = storagePath(self.url)
         setHeaders(self.url)
-        pdfs = scrapHREF(self.url)
+        
+        return scrapeHREF(self.url)
+    
+    def fileAndFolderExists(self):
+        self.assertTrue(os.path.exists('/tmp/' + self.folder))
 
-        self.assertIsNone(downloadPDF(self.url, location, pdfs))
-        self.fileAndFolderExists(self.folder)
-
-    def fileAndFolderExists(self, folder):
-        self.assertTrue(os.path.exists('/tmp/' + folder))
-
-        for fname in os.listdir('/tmp/' + folder):
+        for fname in os.listdir('/tmp/' + self.folder):
 
             if fname.endswith('.pdf'):
                 self.pdfFileExists = True

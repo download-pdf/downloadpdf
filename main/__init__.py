@@ -1,3 +1,3 @@
 #!/usr/bin/env python3
-from main.scrap import scrapHREF
+from main.scrape import scrapeHREF
 from main.download import downloadPDF

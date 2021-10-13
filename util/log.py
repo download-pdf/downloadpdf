@@ -2,7 +2,7 @@
 import logging
 
 
-def initilaizeLog():
+def initializeLog():
     logfile = '/tmp/downloadpdf.log'
     log_format = (
         '[%(asctime)s] %(levelname)-8s %(name)-12s '

@@ -2,22 +2,20 @@
 
 ## **Usage**
 ### **unittest**
-`python -m unittest downloadpdf_test`: Run all the test cases/Classes
+`python -m unittest test -v`: Run all the test cases/Classes
 
-`python -m unittest downloadpdf_test.TestURL`: Run specific test Class
+`python -m unittest test.url_test.TestURL`: Run specific test Class
 
-`python -m unittest downloadpdf_test.TestDownloadPDF.test_shouldDownloadFromAthena`: Run specific test case
-
-`python -m unittest test.downloadpdf_test.TestDownloadPDF.test_shouldDownloadFromWTF`
+`python -m unittest test.main_test.TestDownloadPDF.test_shouldDownloadFromAthena`: Run specific test case
 
 ### **pytest**
 `pytest` framework makes it easy to write small tests, yet scales to support complex functional testing for applications and libraries.
 
-`pytest -vv downloadpdf_test.py --maxfail=1 --html=testcov-html/downloadpdf_testdata.html  --no-cov-on-fail --cov=$(pwd) --cov-report=html` --html generates test cases status, --cov-report=html generates code coverage reports.
+`pytest -vv main_test.py --maxfail=1 --html=testcov-html/downloadpdf_testdata.html  --no-cov-on-fail --cov=$(pwd) --cov-report=html` --html generates test cases status, --cov-report=html generates code coverage reports.
 
 `pytest -vv test --maxfail=1 --no-cov-on-fail --cov=$(pwd)`
 
-`pytest -vv test/downloadpdf_test.py --maxfail=1 --no-cov-on-fail --cov=$(pwd)`
+`pytest -vv test/main_test.py --maxfail=1 --no-cov-on-fail --cov=$(pwd)`
 
 ### **flake8**
 `flake8` glues together pycodestyle, pyflakes, mccabe, and third-party plugins to check the style and quality of some python code.
