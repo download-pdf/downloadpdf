@@ -41,9 +41,9 @@ class TestDownloadPDF(unittest.TestCase):
     def getPDF(self):
         self.location = storagePath(self.url)
         setHeaders(self.url)
-        
+
         return scrapeHREF(self.url)
-    
+
     def fileAndFolderExists(self):
         self.assertTrue(os.path.exists('/tmp/' + self.folder))
 
