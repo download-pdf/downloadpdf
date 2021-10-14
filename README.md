@@ -23,11 +23,11 @@ Test are stored in `/test`.
 ## **Development**
 `.git/hooks/pre-commit`: Git hook is used for quality assurance.
 
-`.github/workflows/cicd.yml`: Github workflow is used for continuous integration and continuous deployment.
+`.github/workflows`: Github workflow is used for continuous integration and continuous deployment.
 
 Package is continuously deployed at `https://pypi.org/project/downloadpdf/`. 
 
-For a successful deployment, version in `setup.py` `version`should be higher than the deployed version number. Else the deployment will fail!
+To deploy, push a `tag`. Tag and `setup.py` version must be higher than the previous deployed versions.
 
 
 [![Build And Deploy downloadpdf](https://github.com/PythonCheatsheet/downloadpdf/actions/workflows/cicd.yml/badge.svg)](https://github.com/PythonCheatsheet/downloadpdf/actions/workflows/cicd.yml)
